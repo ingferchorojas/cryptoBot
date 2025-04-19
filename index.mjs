@@ -107,7 +107,15 @@ bot.on("message", async (msg) => {
 
         const price = res.data[cryptoId]?.usd;
         if (price) {
-            let response = `El precio de ${userText} es ${price} USD`;
+            // Leer list.json y buscar el name del id ingresado
+            const raw = await fs.readFile("list.json", "utf-8");
+            const coins = JSON.parse(raw);
+            const coinInfo = coins.find(
+                (coin) => coin.id.toLowerCase() === cryptoId
+            );
+            const coinName = coinInfo ? coinInfo.name : userText;
+
+            let response = `El precio de ${coinName} es ${price} USD`;
 
             const shouldShowAd = Math.floor(Math.random() * 10) < 3;
             const ad = db.data.adsMessage;
