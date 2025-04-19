@@ -32,7 +32,7 @@ USER_ID=tu_id_de_usuario_en_telegram
 DEFAULT_WELCOME_MESSAGE="Bienvenido al bot de criptomonedas"
 ```
 
-4. Ejecuta el bot:
+4. Ejecutar el bot:
 
 ```bash
 node index.mjs
