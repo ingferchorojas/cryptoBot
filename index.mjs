@@ -100,6 +100,7 @@ bot.on("message", async (msg) => {
                 params: {
                     ids: userText.toLowerCase(), // CoinGecko usa ids de monedas en minúscula
                     vs_currencies: "usd",
+                    api_key: process.env.KEY_coingecko,
                 },
             }
         );

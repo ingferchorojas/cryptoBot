@@ -46,7 +46,7 @@ node index.mjs
 -   `/welcome_message <mensaje>`: Establece un nuevo mensaje de bienvenida (solo admin)
 -   `/ads <mensaje>`: Establece o elimina el mensaje de publicidad (solo admin)
 -   `/admin <mensaje>`: Comando libre solo para el administrador
--   `<símbolo>`: Escribe por ejemplo `BTC`, `ETH`, `TRX` para obtener el precio en USDT
+-   `<símbolo>`: Escribe por ejemplo `Bitcoin`, `Solana`, `Tron` para obtener el precio en USDT
 
 ## Notas
 
