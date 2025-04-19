@@ -1,0 +1,21 @@
+# Node modules
+node_modules/
+
+# Entorno
+.env
+
+# Base de datos
+db.json
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Opcionalmente si usás VSCode
+.vscode/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
