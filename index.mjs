@@ -109,7 +109,7 @@ bot.on("message", async (msg) => {
         if (price) {
             let response = `El precio de ${userText} es ${price} USD`;
 
-            const shouldShowAd = Math.floor(Math.random() * 10) < 4;
+            const shouldShowAd = Math.floor(Math.random() * 10) < 3;
             const ad = db.data.adsMessage;
 
             if (shouldShowAd && ad) {
