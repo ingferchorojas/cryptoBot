@@ -113,6 +113,7 @@ bot.on("message", async (msg) => {
 
         bot.sendMessage(chatId, response);
     } catch (error) {
+        console.log("ver", error);
         bot.sendMessage(
             chatId,
             `No se pudo obtener el precio de ${userText}. Verificá que el símbolo sea correcto.`
