@@ -1,6 +1,7 @@
 import TelegramBot from "node-telegram-bot-api";
 import axios from "axios";
 import dotenv from "dotenv";
+import fs from "fs";
 import { JSONFilePreset } from "lowdb/node";
 
 dotenv.config();
@@ -13,6 +14,9 @@ const defaultData = {
     adsMessage: "",
 };
 const db = await JSONFilePreset("db.json", defaultData);
+
+// Cargar el archivo list.json una sola vez
+const coinsList = JSON.parse(fs.readFileSync("list.json", "utf-8"));
 
 // Comando /start
 bot.onText(/\/start/, (msg) => {
@@ -55,7 +59,7 @@ bot.onText(/\/ads(?:\s+(.+))?/, async (msg, match) => {
         );
     }
 
-    const newAd = match[1]?.trim() || ""; // Si no hay texto, se guarda como cadena vacía
+    const newAd = match[1]?.trim() || "";
     db.data.adsMessage = newAd;
     await db.write();
 
@@ -85,29 +89,43 @@ bot.onText(/\/admin (.+)/, (msg, match) => {
 });
 
 // Consultas de precios
-// Consultas de precios
 bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const userText = msg.text.trim().toUpperCase();
 
     if (userText.startsWith("/") || userText === "") return;
 
+    // Buscar el id correspondiente al símbolo
+    const coin = coinsList.find(
+        (c) => c.symbol.toLowerCase() === userText.toLowerCase()
+    );
+
+    if (!coin) {
+        return bot.sendMessage(
+            chatId,
+            `No se encontró ninguna moneda con el símbolo "${userText}".`
+        );
+    }
+
+    const coinId = coin.id;
+
     try {
-        // Usar la API de CoinGecko en lugar de Binance
         const res = await axios.get(
             "https://api.coingecko.com/api/v3/simple/price",
             {
                 params: {
-                    ids: userText.toLowerCase(), // CoinGecko usa ids de monedas en minúscula
+                    ids: coinId,
                     vs_currencies: "usd",
                     api_key: process.env.KEY_coingecko,
                 },
             }
         );
 
-        const price = res.data[userText.toLowerCase()]?.usd;
+        const price = res.data[coinId]?.usd;
         if (price) {
-            let response = `El precio de ${userText} es ${price} USD`;
+            let response = `El precio de ${
+                coin.name
+            } (${userText.toUpperCase()}) es ${price} USD`;
 
             const shouldShowAd = Math.floor(Math.random() * 10) < 3;
             const ad = db.data.adsMessage;
