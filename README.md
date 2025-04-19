@@ -11,20 +11,20 @@ Bot de Telegram para consultar precios de criptomonedas y administrar mensajes d
 
 ## Instalación
 
-1. Cloná el repositorio:
+1. Clonar el repositorio:
 
 ```bash
 git clone https://github.com/ingferchorojas/cryptoBot.git
 cd cryptoBot
 ```
 
-2. Instalá las dependencias:
+2. Instalar las dependencias:
 
 ```bash
 npm install
 ```
 
-3. Creá un archivo `.env` en la raíz del proyecto con este contenido:
+3. Crear un archivo `.env` en la raíz del proyecto con este contenido:
 
 ```env
 BOT_TOKEN=tu_token_de_telegram
@@ -32,13 +32,13 @@ USER_ID=tu_id_de_usuario_en_telegram
 DEFAULT_WELCOME_MESSAGE="Bienvenido al bot de criptomonedas"
 ```
 
-4. Ejecutá el bot:
+4. Ejecuta el bot:
 
 ```bash
-node index.js
+node index.mjs
 ```
 
-> Asegurate de que el archivo `index.js` sea el nombre correcto de tu archivo principal. Cambialo si es necesario.
+> Asegúrate de que el archivo `index.mjs` sea el nombre correcto de tu archivo principal. Cámbialo si es necesario.
 
 ## Comandos disponibles
 
@@ -46,14 +46,12 @@ node index.js
 -   `/welcome_message <mensaje>`: Establece un nuevo mensaje de bienvenida (solo admin)
 -   `/ads <mensaje>`: Establece o elimina el mensaje de publicidad (solo admin)
 -   `/admin <mensaje>`: Comando libre solo para el administrador
--   `<símbolo>`: Escribí por ejemplo `BTC`, `ETH`, `TRX` para obtener el precio en USDT
+-   `<símbolo>`: Escribe por ejemplo `BTC`, `ETH`, `TRX` para obtener el precio en USDT
 
 ## Notas
 
 -   El bot almacena la configuración en `db.json` usando `lowdb`.
 -   La publicidad solo se muestra ocasionalmente (probabilidad ajustable en el código).
--   Recordá no subir tu archivo `.env` ni `db.json`.
+-   Recuerda no subir tu archivo `.env` ni `db.json`.
 
 ---
-
-Hecho con ❤️ para los amantes de las cripto.
