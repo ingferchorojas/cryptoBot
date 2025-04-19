@@ -85,38 +85,48 @@ bot.onText(/\/admin (.+)/, (msg, match) => {
 });
 
 // Consultas de precios
+// Consultas de precios
 bot.on("message", async (msg) => {
     const chatId = msg.chat.id;
     const userText = msg.text.trim().toUpperCase();
 
     if (userText.startsWith("/") || userText === "") return;
 
-    const symbol = `${userText}USDT`;
-
     try {
+        // Usar la API de CoinGecko en lugar de Binance
         const res = await axios.get(
-            "https://api.binance.com/api/v3/ticker/price",
+            "https://api.coingecko.com/api/v3/simple/price",
             {
-                params: { symbol },
+                params: {
+                    ids: userText.toLowerCase(), // CoinGecko usa ids de monedas en minúscula
+                    vs_currencies: "usd",
+                },
             }
         );
 
-        const price = res.data.price;
-        let response = `El precio de ${userText} es ${price} USDT`;
+        const price = res.data[userText.toLowerCase()]?.usd;
+        if (price) {
+            let response = `El precio de ${userText} es ${price} USD`;
 
-        const shouldShowAd = Math.floor(Math.random() * 10) < 4;
-        const ad = db.data.adsMessage;
+            const shouldShowAd = Math.floor(Math.random() * 10) < 4;
+            const ad = db.data.adsMessage;
 
-        if (shouldShowAd && ad) {
-            response += `\n\n📢 ${ad}`;
+            if (shouldShowAd && ad) {
+                response += `\n\n📢 ${ad}`;
+            }
+
+            bot.sendMessage(chatId, response);
+        } else {
+            bot.sendMessage(
+                chatId,
+                `No se pudo obtener el precio de ${userText}. Verifica que el símbolo sea correcto.`
+            );
         }
-
-        bot.sendMessage(chatId, response);
     } catch (error) {
-        console.log("ver", error);
+        console.log("Error al consultar precios:", error);
         bot.sendMessage(
             chatId,
-            `No se pudo obtener el precio de ${userText}. Verificá que el símbolo sea correcto.`
+            `No se pudo obtener el precio de ${userText}. Intenta nuevamente más tarde.`
         );
     }
 });
