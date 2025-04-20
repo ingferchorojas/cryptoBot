@@ -192,7 +192,7 @@ bot.on("callback_query", async (query) => {
             );
             const coinName = coinInfo ? coinInfo.name : coinId;
 
-            let response = `El precio de ${coinName} es ${price} USD`;
+            let response = `💰 El precio de ${coinName} es ${price} USD\n📊 Datos de coingecko.com`;
 
             const shouldShowAd = Math.floor(Math.random() * 10) < 3;
             const ad = db.data.adsMessage;
