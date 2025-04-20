@@ -178,8 +178,9 @@ bot.on("callback_query", async (query) => {
             "https://api.coingecko.com/api/v3/simple/price",
             {
                 params: {
-                    ids: cryptoId,
+                    ids: coinId,
                     vs_currencies: "usd",
+                    api_key: process.env.KEY_coingecko,
                 },
                 headers: {
                     accept: "application/json",
@@ -187,9 +188,9 @@ bot.on("callback_query", async (query) => {
                 },
             }
         );
-        console.log("ver 1", res.data[coinId], res.data[coinId]?.usd);
+
         const price = res.data[coinId]?.usd;
-        console.log("ver 2", price);
+
         if (price) {
             const raw = await fs.readFile("list.json", "utf-8");
             const coins = JSON.parse(raw);
@@ -217,7 +218,7 @@ bot.on("callback_query", async (query) => {
 
         await bot.answerCallbackQuery(query.id);
     } catch (error) {
-        console.log("Error al manejar callback_query:", error.error.data);
+        console.error("Error al manejar callback_query:", error.error.data);
         await bot.sendMessage(
             chatId,
             `Demasiadas solicitudes. Por favor, espera unos segundos e intenta de nuevo.`
