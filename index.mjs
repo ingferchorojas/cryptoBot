@@ -100,7 +100,10 @@ bot.on("message", async (msg) => {
                 params: {
                     ids: cryptoId,
                     vs_currencies: "usd",
-                    api_key: process.env.KEY_coingecko,
+                },
+                headers: {
+                    accept: "application/json",
+                    "x-cg-demo-api-key": process.env.KEY_coingecko,
                 },
             }
         );
@@ -175,9 +178,12 @@ bot.on("callback_query", async (query) => {
             "https://api.coingecko.com/api/v3/simple/price",
             {
                 params: {
-                    ids: coinId,
+                    ids: cryptoId,
                     vs_currencies: "usd",
-                    api_key: process.env.KEY_coingecko,
+                },
+                headers: {
+                    accept: "application/json",
+                    "x-cg-demo-api-key": process.env.KEY_coingecko,
                 },
             }
         );
