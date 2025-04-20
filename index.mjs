@@ -135,7 +135,7 @@ bot.on("message", async (msg) => {
             );
 
             if (matches.length > 0) {
-                const suggestions = `No se encontró el precio de "${userText}". Prueba con uno de estos ids:`;
+                const suggestions = `No se encontró el precio de "${userText}". Prueba con una de estas opciones:`;
 
                 const buttons = matches.map((coin) => [
                     {
@@ -161,6 +161,60 @@ bot.on("message", async (msg) => {
         bot.sendMessage(
             chatId,
             `No se pudo obtener el precio de ${userText}. Intenta nuevamente más tarde.`
+        );
+    }
+});
+
+// 💡 Manejar botones de sugerencia
+bot.on("callback_query", async (query) => {
+    const chatId = query.message.chat.id;
+    const coinId = query.data.toLowerCase(); // El ID de la cripto
+
+    try {
+        const res = await axios.get(
+            "https://api.coingecko.com/api/v3/simple/price",
+            {
+                params: {
+                    ids: coinId,
+                    vs_currencies: "usd",
+                    api_key: process.env.KEY_coingecko,
+                },
+            }
+        );
+
+        const price = res.data[coinId]?.usd;
+
+        if (price) {
+            const raw = await fs.readFile("list.json", "utf-8");
+            const coins = JSON.parse(raw);
+            const coinInfo = coins.find(
+                (coin) => coin.id.toLowerCase() === coinId
+            );
+            const coinName = coinInfo ? coinInfo.name : coinId;
+
+            let response = `El precio de ${coinName} es ${price} USD`;
+
+            const shouldShowAd = Math.floor(Math.random() * 10) < 3;
+            const ad = db.data.adsMessage;
+
+            if (shouldShowAd && ad) {
+                response += `\n\n📢 ${ad}`;
+            }
+
+            await bot.sendMessage(chatId, response);
+        } else {
+            await bot.sendMessage(
+                chatId,
+                `No se pudo obtener el precio de ${coinId}.`
+            );
+        }
+
+        await bot.answerCallbackQuery(query.id);
+    } catch (error) {
+        console.error("Error al manejar callback_query:", error);
+        await bot.sendMessage(
+            chatId,
+            `Hubo un error al procesar la solicitud.`
         );
     }
 });
