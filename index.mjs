@@ -211,7 +211,7 @@ bot.on("callback_query", async (query) => {
 
         await bot.answerCallbackQuery(query.id);
     } catch (error) {
-        console.error("Error al manejar callback_query:", error);
+        console.error("Error al manejar callback_query:", error.error.data);
         await bot.sendMessage(
             chatId,
             `Hubo un error al procesar la solicitud.`
