@@ -135,15 +135,19 @@ bot.on("message", async (msg) => {
             );
 
             if (matches.length > 0) {
-                let suggestions = `No se encontró el precio de "${userText}". Probá con uno de estos ids:\n\n`;
-                suggestions += matches
-                    .map(
-                        (coin) =>
-                            `🔹 Utiliza el texto *${coin.id}* para ${coin.name}`
-                    )
-                    .join("\n");
+                const suggestions = `No se encontró el precio de "${userText}". Prueba con uno de estos ids:`;
+
+                const buttons = matches.map((coin) => [
+                    {
+                        text: `${coin.name} (${coin.id})`,
+                        callback_data: coin.id,
+                    },
+                ]);
+
                 bot.sendMessage(chatId, suggestions, {
-                    parse_mode: "Markdown",
+                    reply_markup: {
+                        inline_keyboard: buttons,
+                    },
                 });
             } else {
                 bot.sendMessage(
