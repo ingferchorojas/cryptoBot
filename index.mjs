@@ -214,7 +214,7 @@ bot.on("callback_query", async (query) => {
         console.error("Error al manejar callback_query:", error.error.data);
         await bot.sendMessage(
             chatId,
-            `Hubo un error al procesar la solicitud.`
+            `Demasiadas solicitudes. Por favor, espera unos segundos e intenta de nuevo.`
         );
     }
 });
