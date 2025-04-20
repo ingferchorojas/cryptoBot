@@ -187,9 +187,9 @@ bot.on("callback_query", async (query) => {
                 },
             }
         );
-
+        console.log("ver 1", res.data[coinId], res.data[coinId]?.usd);
         const price = res.data[coinId]?.usd;
-
+        console.log("ver 2", price);
         if (price) {
             const raw = await fs.readFile("list.json", "utf-8");
             const coins = JSON.parse(raw);
